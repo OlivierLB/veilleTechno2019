@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-
-import { Flex, Box } from '@rebass/grid'
 import './App.css';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
+import Header from './Components/Header/Header';
+import Body from './Components/Body/Body';
 
-import {AutoComplete} from 'primereact/autocomplete';
+//Reducers
+import header from './redux/reducers/Header'
+
+const store = createStore(
+    combineReducers({
+        header
+    }),
+    composeWithDevTools(applyMiddleware(thunk))
+)
 
 class App extends Component {
   render() {
     return (
-      <Flex className="App">
-          <Box width={1/2} px={2}>
-              Half width
-          </Box>
-          <Box width={1/2} px={2}>
-              <header className="App-header">
-                  <img src={logo} className="App-logo" alt="logo" />
-                  <p>
-                      Edit <code>src/App.js</code> and save to reload.
-                  </p>
-                  <AutoComplete/>
-                  Learn React
-              </header>
-          </Box>
-      </Flex>
+        <Provider store={store}>
+            <Header/>
+            <Body />
+        </Provider>
     );
   }
 }
